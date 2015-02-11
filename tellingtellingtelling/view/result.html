@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block container %}
+<h2>{{other_name}}さんとの相性は</h2>
+<div id="score">
+{{score}}点
+</div>
+
+<div id="result">
+{{result}}
+</div>
+
+<form name="save_content">
+  <input type="hidden" name="score" value={{score}}>
+  <input type="hidden" name="result" value={{result}}>
+  <input type="hidden" name="your_name" value={{your_name}}>
+  <input type="hidden" name="your_birthday" value={{your_birthday}}>
+  <input type="hidden" name="your_name" value={{your_name}}>
+  <input type="hidden" name="other_name" value={{other_name}}>
+  <input type="hidden" name="other_birthday" value={{other_birthday}}>
+  <input type="hidden" name="twitter_name" value={{twitter_name}}>
+</form>
+
+<div id="recommend">
+<button type="button" class="btn btn-default btn-info" onClick="save_confirm('{{your_name}}',{{twitter_name}},{{login}})" >結果を保存する</button>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<script src="stylesheets/js/confirm.js"></script>
+{% endblock %}

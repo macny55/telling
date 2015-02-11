@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block container %}
+<form id=tweet_form action="/again_result" method="POST">
+  <div id="tweet_content">
+    <textarea maxlength="140" name="tweet" rows="5" cols="30">@{{twitter_name}}さんと気になるあの人との恋愛タイプはドラマ「{{drama_name}}」でした！</textarea>
+    <input type="hidden" name="drama_image" value={{drama_image}}>
+    <input type="hidden" name="drama_image_url" value={{drama_image_url}}>
+    <input type="hidden" name="get_flag" value={{get_flag}}>
+  </div>
+  <div id="tweet_button">
+    <button type="submit" class="btn btn-default btn-info" value="tweet" >この内容でつぶやく</button>
+  </div>
+</form>
+
+
+{% endblock %}
+
+{% block footer %}
+<script src="stylesheets/js/share_result.js"></script>
+{% endblock %}

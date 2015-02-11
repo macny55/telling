@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block container %}
+<form action="/data_store" method="POST">
+<input type="text" name="id" size="22" placeholder="IDを入力してください">
+<input type="text" name="score" size="22" placeholder="スコアを入力してください">
+<input type="text" name="result" size="22" placeholder="結果を入力してください">
+<button type="submit" value="保存">保存する</button>
+</form>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

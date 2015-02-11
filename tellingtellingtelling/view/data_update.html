@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block container %}
+<form action="/data_update" method="POST">
+<input type="text" name="id" size="22" placeholder="IDを入力してください">
+<input type="text" name="drama_name" size="22" placeholder="ドラマの名前を入力してください">
+<input type="text" name="sex_id" size="22" placeholder="性別(1:男,2:女)を入力してください">
+<input type="text" name="drama_image_1" size="22" placeholder="画像１の名前を入力してください">
+<input type="text" name="drama_image_2" size="22" placeholder="画像２の名前を入力してください">
+<input type="text" name="drama_image_3" size="22" placeholder="画像３の名前を入力してください">
+<input type="text" name="drama_image_1_url" size="22" placeholder="画像１のURLを入力してください">
+<input type="text" name="drama_image_2_url" size="22" placeholder="画像２のURLを入力してください">
+<input type="text" name="drama_image_3_url" size="22" placeholder="画像３のURLを入力してください">
+<input type="text" name="drama_result" size="22" placeholder="結果の文章を入力してください">
+
+<button type="submit" value="保存">保存する</button>
+</form>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

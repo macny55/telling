@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block container %}
+<div id="names">
+your_nameさんとother_nameさんとの恋愛タイプは
+</div>
+<div id="drama_name">
+<h2>「{{drama_name}}」</h2>
+</div>
+
+<div id="drama_image">
+<img id="image_def" src="img/drama/{{drama_image}}" alt="drama_image" width="193" height="130">
+</div>
+
+<div id="result">
+{{result}}
+</div>
+
+<div id="recommend">
+<button type="button" class="btn btn-default btn-info" onClick="location.href='http://tellingtellingtelling.appspot.com/'";">もう一度占う</button>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<script src="stylesheets/js/again.js"></script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block container %}
+<div id="profile">
+  <h2>あなたのプロフィール</h2>
+  <form action="/judge" method="POST">
+    <table id="your_profile">
+      <tr>
+        <td align="right"><b> 名前：</b></td>
+        <td><input type="text" name="your-name" size="22" maxlength="20" placeholder="名前を入力してください"></td>
+      </tr>
+      <tr>
+        <td align="right"><b> 生年月日：</b></td>
+        <td><input type="date" name="your-birthday" style="width:165px" value="1990-01-01"></td>
+      </tr>
+      <tr>
+        <td align="right"><b>性別：</b></td>
+        <td>
+          <label><input id="your-male" type="radio" name="your-sex" value="male">男性</label>
+          <label><input id="your-female" type="radio" name="your-sex" value="female">女性</label>
+        </td>
+      </tr>
+    </table>
+
+    <h2>あいてのプロフィール</h2>
+    <table id="other_profile">
+      <tr>
+        <td align="right"><b> 名前：</b></td>
+        <td><input type="text" name="other-name" size="22" maxlength="20" placeholder="名前を入力してください"></td>
+      </tr>
+      <tr>
+        <td align="right"><b> 生年月日：</b></td>
+        <td><input type="date" name="other-birthday" style="width:165px" value="1990-01-01"></td>
+      </tr>
+    </table>
+    <button class="judge-button" type="submit"><img id="judge" class="img-rounded" src="img/disabled-judge.png"></img></button>
+  </form>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script src="stylesheets/js/profile.js"></script>
+{% endblock %}
