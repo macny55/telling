@@ -22,8 +22,7 @@ from google.appengine.api import images
 from google.appengine.ext import db
 import webapp2 as webapp
 import os
-from django.http import HttpResponse, HttpResponseRedirect
-from setting import *
+import setting
 import cookie
 import logging
 import htmlentitydefs
@@ -130,7 +129,7 @@ def htmlentity2unicode(text):
 
     return result
 
-#　星座を返す
+# 星座を返す
 def serch_constellation(month,day):
     seiza = { 1 : 10, 2 : 11, 3 : 12, 4 : 1,5 : 2, 6 : 3, 7 : 4, 8 : 5,9 : 6, 10 : 7, 11 : 8, 12 : 9 }
     if day > 22:
@@ -142,17 +141,19 @@ def serch_constellation(month,day):
         return seiza[month]
 
 #/関数----------------------------------------------------------------------------#
-
+#リクエストハンドラ---------------------------------------------------------------#
 class TopPage(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__),'view/top.html')
         self.response.out.write(template.render(path,{}))
 
+#ユーザ属性入力画面
 class Profile(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'view/profile.html')
         self.response.out.write(template.render(path,{}))
 
+#占い結果画面
 class Judge(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'view/drama_result.html')
@@ -192,42 +193,7 @@ class Judge(webapp.RequestHandler):
                                                        'drama_image_url':drama_image_url,
                                                        'drama_name':drama_name
                                                        }))
-# DBにデータをインサート
-class DataStore(webapp.RequestHandler):
-    def get(self):
-        path = os.path.join(os.path.dirname(__file__), 'view/data_store.html')
-        self.response.out.write(template.render(path, {}))
 
-    def post(self):
-        import store
-        result_id = self.request.get('id')
-        score = self.request.get('score')
-        result = self.request.get('result')
-        store.save_result(result_id,score,result)
-        path = os.path.join(os.path.dirname(__file__), 'view/data_store.html')
-        self.response.out.write(template.render(path, {}))
-        
-#DBのデータをアップデート
-class DataUpdate(webapp.RequestHandler):
-    def get(self):
-        path = os.path.join(os.path.dirname(__file__), 'view/data_update.html')
-        self.response.out.write(template.render(path, {}))
-
-    def post(self):
-        import store
-        result_id = self.request.get('id')
-        drama_name = self.request.get('drama_name')
-        sex_id = self.request.get('sex_id') #1=man,2=woman
-        drama_image_1 = self.request.get('drama_image_1')
-        drama_image_2 = self.request.get('drama_image_2')
-        drama_image_3 = self.request.get('drama_image_3')
-        drama_image_1_url = self.request.get('drama_image_1_url')
-        drama_image_2_url = self.request.get('drama_image_2_url')
-        drama_image_3_url = self.request.get('drama_image_3_url')
-        drama_result = self.request.get('drama_result')
-        store.update_result(result_id,drama_name,sex_id,drama_image_1,drama_image_2,drama_image_3,drama_image_1_url,drama_image_2_url,drama_image_3_url,drama_result)
-        path = os.path.join(os.path.dirname(__file__), 'view/data_update.html')
-        self.response.out.write(template.render(path, {}))
 
 class Register(webapp.RequestHandler):
     def get(self):
@@ -290,18 +256,63 @@ class AgainResult(webapp.RequestHandler):
         api.update_status(tweet_content +' '+ drama_image_url +' http://tellingtellingtelling.appspot.com/')
         path = os.path.join(os.path.dirname(__file__), 'view/again.html')
         self.response.out.write(template.render(path, {}))
+        
+#データ登録専用画面----------------------------------------------------------------#
+# DBにデータをインサート
+class DataStore(webapp.RequestHandler):
+    def get(self):
+        path = os.path.join(os.path.dirname(__file__), 'view/data_store.html')
+        self.response.out.write(template.render(path, {}))
 
-app = webapp.WSGIApplication([
-    ('/', TopPage),
-    ('/profile', Profile),
-    ('/judge', Judge),
-    ('/login', OAuthLogin),
-    ('/login_callback', OAuthLoginCallBack),
-    ('/logout', OAuthLogout),
-    ('/register', Register),
-    ('/save_result', SaveResult),
-    ('/share_result', ShareResult),
-    ('/again_result', AgainResult),
-    ('/data_store', DataStore),
-    ('/data_update', DataUpdate)
-], debug=True)
+    def post(self):
+        import store
+        result_id = self.request.get('id')
+        score = self.request.get('score')
+        result = self.request.get('result')
+        store.save_result(result_id,score,result)
+        path = os.path.join(os.path.dirname(__file__), 'view/data_store.html')
+        self.response.out.write(template.render(path, {}))
+        
+#DBのデータをアップデート
+class DataUpdate(webapp.RequestHandler):
+    def get(self):
+        path = os.path.join(os.path.dirname(__file__), 'view/data_update.html')
+        self.response.out.write(template.render(path, {}))
+
+    def post(self):
+        import store
+        result_id = self.request.get('id')
+        drama_name = self.request.get('drama_name')
+        sex_id = self.request.get('sex_id') #1=man,2=woman
+        drama_image_1 = self.request.get('drama_image_1')
+        drama_image_2 = self.request.get('drama_image_2')
+        drama_image_3 = self.request.get('drama_image_3')
+        drama_image_1_url = self.request.get('drama_image_1_url')
+        drama_image_2_url = self.request.get('drama_image_2_url')
+        drama_image_3_url = self.request.get('drama_image_3_url')
+        drama_result = self.request.get('drama_result')
+        store.update_result(result_id,drama_name,sex_id,drama_image_1,drama_image_2,drama_image_3,drama_image_1_url,drama_image_2_url,drama_image_3_url,drama_result)
+        path = os.path.join(os.path.dirname(__file__), 'view/data_update.html')
+        self.response.out.write(template.render(path, {}))
+#/データ登録専用画面---------------------------------------------------------------#
+#/リクエストハンドラ---------------------------------------------------------------#
+#メイン----------------------------------------------------------------------------#
+def main():
+    app = webapp.WSGIApplication([
+        ('/', TopPage),
+        ('/profile', Profile),
+        ('/judge', Judge),
+        ('/login', OAuthLogin),
+        ('/login_callback', OAuthLoginCallBack),
+        ('/logout', OAuthLogout),
+        ('/register', Register),
+        ('/save_result', SaveResult),
+        ('/share_result', ShareResult),
+        ('/again_result', AgainResult),
+        ('/data_store', DataStore),
+        ('/data_update', DataUpdate)
+    ], debug=True)
+#/メイン---------------------------------------------------------------------------#
+
+if __name__ == '__main__':
+        main()
