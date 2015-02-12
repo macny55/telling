@@ -102,7 +102,6 @@ def htmlentity2unicode(text):
     reference_regex = re.compile(u'&(#x?[0-9a-f]+|[a-z]+);', re.IGNORECASE)
     num16_regex = re.compile(u'#x\d+', re.IGNORECASE)
     num10_regex = re.compile(u'#\d+', re.IGNORECASE)
-    
     result = u''
     i = 0
     while True:
@@ -111,11 +110,9 @@ def htmlentity2unicode(text):
         if match is None:
             result += text[i:]
             break
-        
         result += text[i:match.start()]
         i = match.end()
         name = match.group(1)
-        
         # 実体参照
         if name in htmlentitydefs.name2codepoint.keys():
             result += unichr(htmlentitydefs.name2codepoint[name])
@@ -126,9 +123,8 @@ def htmlentity2unicode(text):
         elif num10_regex.match(name):
             # 10進数
             result += unichr(int(name[1:]))
-
     return result
-
+    
 # 星座を返す
 def serch_constellation(month,day):
     seiza = { 1 : 10, 2 : 11, 3 : 12, 4 : 1,5 : 2, 6 : 3, 7 : 4, 8 : 5,9 : 6, 10 : 7, 11 : 8, 12 : 9 }
@@ -147,13 +143,13 @@ class TopPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__),'view/top.html')
         self.response.out.write(template.render(path,{}))
 
-#ユーザ属性入力画面
+#ユーザ属性入力画面を表示
 class Profile(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'view/profile.html')
         self.response.out.write(template.render(path,{}))
 
-#占い結果画面
+#占い結果の表示
 class Judge(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'view/drama_result.html')
@@ -193,26 +189,7 @@ class Judge(webapp.RequestHandler):
                                                        'drama_image_url':drama_image_url,
                                                        'drama_name':drama_name
                                                        }))
-
-
-class Register(webapp.RequestHandler):
-    def get(self):
-        path = os.path.join(os.path.dirname(__file__), 'view/register.html')
-        self.response.out.write(template.render(path, {}))
-
-class SaveResult(webapp.RequestHandler):
-    def get(self):
-        path = os.path.join(os.path.dirname(__file__), 'view/top.html')
-        self.response.out.write(template.render(path, {}))
-
-    def post(self):
-        
-        #20141222 result.htmlのデータを保存する処理を書く
-        # 保存先はSaveResultとSaveProfile
-
-        path = os.path.join(os.path.dirname(__file__), 'view/register.html')
-        self.response.out.write(template.render(path, {}))
-
+# 占い結果のTwitter投稿画面を表示
 class ShareResult(webapp.RequestHandler):
     def get(self):
         token = cookie.load_cookie(self)
@@ -241,7 +218,7 @@ class ShareResult(webapp.RequestHandler):
                                                        'drama_image_url':drama_image_url,
                                                        'get_flag':get_flag
                                                       }))
-
+# Twitter投稿後に表示
 class AgainResult(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'view/top.html')
@@ -305,8 +282,6 @@ def main():
         ('/login', OAuthLogin),
         ('/login_callback', OAuthLoginCallBack),
         ('/logout', OAuthLogout),
-        ('/register', Register),
-        ('/save_result', SaveResult),
         ('/share_result', ShareResult),
         ('/again_result', AgainResult),
         ('/data_store', DataStore),
