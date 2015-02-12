@@ -9,7 +9,7 @@ handlers:
   static_dir: view/stylesheets
 
 - url: /img
-  static_dir: view/images
+  static_dir: view/stylesheets/images
 
 - url: /favicon.ico
   static_files: view/images/favicon.ico
