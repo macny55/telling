@@ -153,49 +153,6 @@ class Profile(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'view/profile.html')
         self.response.out.write(template.render(path,{}))
 
-#class Judge(webapp.RequestHandler):
-#    def get(self):
-#        path = os.path.join(os.path.dirname(__file__), 'view/result.html')
-#        self.response.out.write(template.render(path, {}))
-#
-#    def post(self):
-#        login = 0
-#        twitter_name = ''
-#        token = cookie.load_cookie(self)
-#        if token != 'deleted' and token != '':
-#            login = 1
-#            twitter_name = cookie.load_cookie_usr_name(self)
-#        your_name = self.request.get('your-name')
-#        your_birthday = self.request.get('your-birthday')
-#        your_sex = self.request.get('your-sex')
-#        other_name = self.request.get('other-name')
-#        other_birthday = self.request.get('other-birthday')
-#        
-#        if your_sex == "female":
-#            female_birthday = datetime.datetime.strptime(your_birthday, '%Y-%m-%d')
-#            male_birthday   = datetime.datetime.strptime(other_birthday, '%Y-%m-%d')
-#        else:
-#            female_birthday = datetime.datetime.strptime(other_birthday, '%Y-%m-%d')
-#            male_birthday   = datetime.datetime.strptime(your_birthday, '%Y-%m-%d')
-#
-#        female_constellation = serch_constellation(int(female_birthday.month),int(female_birthday.day))
-#        male_constellation = serch_constellation(int(male_birthday.month),int(male_birthday.day))
-#        affinity_id = (female_constellation - 1) * 12 + male_constellation
-#        query = db.GqlQuery("SELECT * FROM Result WHERE __key__ = key('Result' , :1)" , str(affinity_id))
-#        horoscope_score = query[0].score
-#        horoscope_result = query[0].result
-#        path = os.path.join(os.path.dirname(__file__), 'view/result.html')
-#        self.response.out.write(template.render(path, {'your_name':your_name,
-#                                                       'your_birthday':your_birthday,
-#                                                       'your_sex':your_sex,
-#                                                       'other_name':other_name,
-#                                                       'other_birthday':other_birthday,
-#                                                       'score':horoscope_score,
-#                                                       'result':horoscope_result,
-#                                                       'login':login,
-#                                                       'twitter_name':twitter_name
-#                                                       }))
-
 class Judge(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'view/drama_result.html')
@@ -222,15 +179,8 @@ class Judge(webapp.RequestHandler):
         horoscope_result = query[0].drama_result
         drama_name = query[0].drama_name
         image_no = random.randint(1,3)
-        if image_no == 1:
-            drama_image = query[0].drama_image_1
-            drama_image_url = query[0].drama_image_1_url
-        elif image_no == 2:
-            drama_image = query[0].drama_image_2
-            drama_image_url = query[0].drama_image_2_url
-        elif image_no == 3:
-            drama_image = query[0].drama_image_3
-            drama_image_url = query[0].drama_image_3_url
+        drama_image = eval('query[0].drama_image_' + str(image_no))
+        drama_image_url = eval('query[0].drama_image_' + str(image_no) + '_url')
         path = os.path.join(os.path.dirname(__file__), 'view/drama_result.html')
         self.response.out.write(template.render(path, {'your_name':your_name,
                                                        'your_birthday':your_birthday,
@@ -242,7 +192,7 @@ class Judge(webapp.RequestHandler):
                                                        'drama_image_url':drama_image_url,
                                                        'drama_name':drama_name
                                                        }))
-
+# DBにデータをインサート
 class DataStore(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'view/data_store.html')
@@ -256,7 +206,8 @@ class DataStore(webapp.RequestHandler):
         store.save_result(result_id,score,result)
         path = os.path.join(os.path.dirname(__file__), 'view/data_store.html')
         self.response.out.write(template.render(path, {}))
-
+        
+#DBのデータをアップデート
 class DataUpdate(webapp.RequestHandler):
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'view/data_update.html')
