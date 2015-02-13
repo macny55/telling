@@ -152,7 +152,7 @@ class Profile(webapp.RequestHandler):
 #占い結果の表示
 class Judge(webapp.RequestHandler):
     def get(self):
-        path = os.path.join(os.path.dirname(__file__), 'view/drama_result.html')
+        path = os.path.join(os.path.dirname(__file__), 'view/result.html')
         self.response.out.write(template.render(path, {}))
 
     def post(self):
@@ -178,7 +178,7 @@ class Judge(webapp.RequestHandler):
         image_no = random.randint(1,3)
         drama_image = eval('query[0].drama_image_' + str(image_no))
         drama_image_url = eval('query[0].drama_image_' + str(image_no) + '_url')
-        path = os.path.join(os.path.dirname(__file__), 'view/drama_result.html')
+        path = os.path.join(os.path.dirname(__file__), 'view/result.html')
         self.response.out.write(template.render(path, {'your_name':your_name,
                                                        'your_birthday':your_birthday,
                                                        'your_sex':your_sex,
